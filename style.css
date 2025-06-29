@@ -16,6 +16,7 @@ body {
     background-color: #ffffff;
     color: #333;
     line-height: 1.5;
+    transition: padding-bottom 0.3s ease; /* Thêm transition cho padding-bottom */
 }
 
 /* Utility Classes */
@@ -248,6 +249,10 @@ body {
     font-size: 28px;
 }
 
+.control-btn.active {
+    color: #8C52FF;
+}
+
 .volume-control {
     display: flex;
     align-items: center;
@@ -362,6 +367,15 @@ body {
     transform: scale(1.05);
 }
 
+.lyrics-text {
+    white-space: pre-wrap;
+    font-family: inherit;
+    text-align: center;
+    line-height: 1.8;
+    color: #4b5563;
+    font-size: 14px;
+}
+
 /* Playlist Section */
 .playlist-section {
     margin-top: 32px;
@@ -458,17 +472,6 @@ body {
     color: #9ca3af;
 }
 
-/* Bottom Navigation */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    max-width: 375px;
-    background-color: white;
-    border-top: 1px solid #f0f0f0;
-    padding: 8px 8px;
-    z-index: 20;
-}
 
 .nav-items {
     display: flex;
@@ -508,10 +511,11 @@ body {
     color: #8C52FF;
 }
 
+
 /* Mini Player */
 .mini-player {
     position: fixed;
-    bottom: 72px;
+    bottom: 60px; /* Đặt ngay phía trên bottom navigation */
     left: 0;
     width: 100%;
     max-width: 375px;
@@ -526,6 +530,8 @@ body {
 .mini-player-content {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .mini-album-art {
@@ -534,6 +540,7 @@ body {
     border-radius: 8px;
     overflow: hidden;
     margin-right: 12px;
+    flex-shrink: 0;
 }
 
 .mini-album-art img {
@@ -545,6 +552,7 @@ body {
 .mini-track-info {
     flex: 1;
     min-width: 0;
+    margin-right: 12px;
 }
 
 .mini-title {
@@ -568,6 +576,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 .mini-control-btn {
@@ -593,6 +602,19 @@ body {
 .mini-play-pause-btn i {
     color: white;
     font-size: 16px;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    max-width: 375px;
+    background-color: white;
+    border-top: 1px solid #f0f0f0;
+    padding: 8px 8px;
+    z-index: 20;
+    height: 60px;
 }
 
 /* Animation */

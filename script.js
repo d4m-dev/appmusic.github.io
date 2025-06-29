@@ -31,6 +31,8 @@ let isPlaying = false;
 let currentLyrics = [];
 let lyricElements = [];
 let isLyricsVisible = false;
+let isShuffle = false;
+let isRepeat = false;
 
 // Initialize player
 function initPlayer() {
@@ -110,32 +112,18 @@ async function loadLyrics(lyricUrl) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const lyricHtml = await response.text();
-        lyricsContent.innerHTML = lyricHtml;
+        const lyricText = await response.text();
+        // Sử dụng thẻ pre để giữ nguyên định dạng
+        lyricsContent.innerHTML = `<pre class="lyrics-text">${lyricText}</pre>`;
         
-        // Parse lyrics
-        parseLyrics();
+        // Parse lyrics (nếu cần cho highlight) - ở đây chúng ta không dùng nữa vì dạng văn bản thuần
+        // Nhưng nếu muốn highlight thì cần parse, tạm thời bỏ qua
+        // parseLyrics(); // Hàm này không dùng nữa vì lời bài hát không có time
         
     } catch (error) {
         console.error('Lỗi khi tải lời bài hát:', error);
         lyricsContent.innerHTML = '<div class="error">Không tải được lời bài hát</div>';
         currentLyrics = [];
-    }
-}
-
-// Parse lyrics elements
-function parseLyrics() {
-    lyricElements = Array.from(lyricsContent.querySelectorAll('p'));
-    currentLyrics = lyricElements.map(lyric => {
-        return {
-            element: lyric,
-            time: parseFloat(lyric.dataset.time || 0)
-        };
-    });
-    
-    // Auto-scroll to first lyric if visible
-    if (isLyricsVisible && currentLyrics.length > 0) {
-        currentLyrics[0].element.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 }
 
@@ -186,6 +174,48 @@ function setupEventListeners() {
         }
     });
     
+    // Shuffle and Repeat
+    document.querySelector('.ri-shuffle-line').closest('.control-btn')
+        .addEventListener('click', toggleShuffle);
+    document.querySelector('.ri-repeat-line').closest('.control-btn')
+        .addEventListener('click', toggleRepeat);
+    
+    // Bottom navigation
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('active');
+            });
+            
+            // Add active class to clicked nav item
+            this.classList.add('active');
+            
+            // Get the label of the clicked item
+            const label = this.querySelector('.nav-label').textContent;
+            
+            // Hide all sections
+            document.querySelector('.now-playing').style.display = 'none';
+            document.querySelector('.playlist-section').style.display = 'none';
+            // In future, add other sections here
+            
+            // Show sections based on label
+            if (label === 'Trang chủ') {
+                document.querySelector('.now-playing').style.display = 'flex';
+                document.querySelector('.playlist-section').style.display = 'block';
+            } else if (label === 'Tìm kiếm') {
+                // For now, show a message or leave empty
+                // In the future, implement search section
+            } else if (label === 'Thư viện') {
+                // Implement library section in the future
+            } else if (label === 'Cá nhân') {
+                // Implement profile section in the future
+            }
+        });
+    });
+
     // Audio events
     audioPlayer.addEventListener('timeupdate', updateProgress);
     audioPlayer.addEventListener('loadedmetadata', () => {
@@ -197,18 +227,41 @@ function setupEventListeners() {
         playPauseIcon.className = 'ri-pause-fill';
         miniPlayPauseIcon.className = 'ri-pause-fill';
         document.getElementById('current-artwork').classList.add('playing-animation');
+        
+        // Show mini player
         miniPlayer.style.display = 'block';
+        document.body.style.paddingBottom = '120px'; /* Space for mini player */
     });
     audioPlayer.addEventListener('pause', () => {
         isPlaying = false;
         playPauseIcon.className = 'ri-play-fill';
         miniPlayPauseIcon.className = 'ri-play-fill';
         document.getElementById('current-artwork').classList.remove('playing-animation');
+        
+        // Hide mini player after 3 seconds if not playing
+        setTimeout(() => {
+            if (!isPlaying) {
+                miniPlayer.style.display = 'none';
+                document.body.style.paddingBottom = '0';
+            }
+        }, 3000);
     });
     audioPlayer.addEventListener('error', (e) => {
         console.error('Lỗi phát nhạc:', e);
         alert('Không thể phát bài hát này. Vui lòng thử bài khác.');
     });
+    
+    // Resize event for responsive adjustments
+    window.addEventListener('resize', adjustMiniPlayerPosition);
+}
+
+// Adjust mini player position on resize
+function adjustMiniPlayerPosition() {
+    if (miniPlayer.style.display === 'block') {
+        document.body.style.paddingBottom = '120px';
+    } else {
+        document.body.style.paddingBottom = '0';
+    }
 }
 
 // Toggle play/pause
@@ -225,14 +278,42 @@ function togglePlayPause() {
 
 // Play next track
 function playNextTrack() {
-    currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+    if (isShuffle) {
+        // Generate a random index different from current
+        let newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * tracks.length);
+        } while (newIndex === currentTrackIndex && tracks.length > 1);
+        currentTrackIndex = newIndex;
+    } else {
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+    }
     selectTrack(currentTrackIndex);
-    audioPlayer.play();
+    
+    if (isRepeat) {
+        audioPlayer.currentTime = 0;
+        audioPlayer.play();
+    } else {
+        audioPlayer.play();
+    }
 }
 
 // Play previous track
 function playPreviousTrack() {
-    currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+    if (audioPlayer.currentTime > 3) {
+        audioPlayer.currentTime = 0;
+        return;
+    }
+    
+    if (isShuffle) {
+        let newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * tracks.length);
+        } while (newIndex === currentTrackIndex && tracks.length > 1);
+        currentTrackIndex = newIndex;
+    } else {
+        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+    }
     selectTrack(currentTrackIndex);
     audioPlayer.play();
 }
@@ -255,9 +336,6 @@ function updateProgress() {
         const progressPercent = (currentTime / duration) * 100;
         progressBar.value = progressPercent;
         currentTimeEl.textContent = formatTime(currentTime);
-        
-        // Highlight current lyric
-        updateActiveLyric(currentTime);
     }
 }
 
@@ -292,49 +370,22 @@ function toggleLyrics() {
     if (isLyricsVisible) {
         lyricsContainer.style.display = 'block';
         lyricsToggle.classList.add('active');
-        
-        // Scroll to active lyric if available
-        const activeLyric = document.querySelector('.active-lyric');
-        if (activeLyric) {
-            activeLyric.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
     } else {
         lyricsContainer.style.display = 'none';
         lyricsToggle.classList.remove('active');
     }
 }
 
-// Update active lyric
-function updateActiveLyric(currentTime) {
-    if (currentLyrics.length === 0) return;
-    
-    // Clear active classes
-    currentLyrics.forEach(lyric => {
-        lyric.element.classList.remove('active-lyric');
-    });
-    
-    // Find current lyric
-    let currentLyric = null;
-    for (let i = currentLyrics.length - 1; i >= 0; i--) {
-        if (currentTime >= currentLyrics[i].time) {
-            currentLyric = currentLyrics[i];
-            break;
-        }
-    }
-    
-    // Apply active class
-    if (currentLyric) {
-        currentLyric.element.classList.add('active-lyric');
-        
-        // Auto-scroll if lyrics are visible
-        if (isLyricsVisible) {
-            currentLyric.element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'nearest'
-            });
-        }
-    }
+// Toggle shuffle
+function toggleShuffle() {
+    isShuffle = !isShuffle;
+    this.classList.toggle('active', isShuffle);
+}
+
+// Toggle repeat
+function toggleRepeat() {
+    isRepeat = !isRepeat;
+    this.classList.toggle('active', isRepeat);
 }
 
 // Format time (seconds to mm:ss)
