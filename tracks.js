@@ -131,6 +131,6 @@ const tracks = [
     artist: "Mochiii Cover",
     artwork: "https://i.postimg.cc/MZ7GFBLq/1.jpg",
     path: "https://upnhanh.us/files/f8c826d4d62d9e166e12ac4877bafc93/c9097511455de58ce9dba0203ac0f5f5/mashup6in1mochiii.mp3",
-    lyric: "https://raw.githubusercontent.com/d4m-dev/media/refs/heads/main/.../1.rlc",
+    lyric: "https://raw.githubusercontent.com/d4m-dev/media/refs/heads/main/mashup6in1/1.lrc",
   },
 ];

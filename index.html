@@ -11,174 +11,174 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
 </head>
-<body class="bg-white">
+<body>
     <!-- Header -->
-    <header class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-20 border-b border-gray-100 px-4 py-3">
-        <div class="flex items-center justify-between">
-            <div class="font-['Pacifico'] text-primary text-xl">logo</div>
+    <header class="app-header">
+        <div class="header-content">
+            <div class="app-logo">logo</div>
             
-            <div class="relative flex-1 mx-4">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <i class="ri-search-line text-gray-400"></i>
+            <div class="search-container">
+                <div class="search-icon">
+                    <i class="ri-search-line"></i>
                 </div>
-                <input type="search" class="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="Tìm kiếm bài hát, nghệ sĩ...">
+                <input type="search" class="search-input" placeholder="Tìm kiếm bài hát, nghệ sĩ...">
             </div>
             
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 flex items-center justify-center">
-                    <i class="ri-notification-3-line text-gray-700"></i>
+            <div class="header-actions">
+                <div class="action-icon">
+                    <i class="ri-notification-3-line"></i>
                 </div>
-                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-white text-xs">TH</div>
+                <div class="user-avatar">TH</div>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="pt-16 pb-20 px-4">
+    <main class="app-main">
         <!-- Now Playing Section -->
-        <div class="mt-6 flex flex-col items-center">
-            <div class="relative w-64 h-64 rounded-xl overflow-hidden shadow-lg mb-6">
-                <img id="current-artwork" src="" alt="Album Artwork" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-black/10"></div>
-                <div class="absolute bottom-3 right-3 bg-black/30 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
-                    <i class="ri-hd-fill mr-1"></i> HQ
+        <div class="now-playing">
+            <div class="album-art-container">
+                <img id="current-artwork" src="" alt="Album Artwork" class="album-art">
+                <div class="album-overlay"></div>
+                <div class="album-hq-badge">
+                    <i class="ri-hd-fill"></i> HQ
                 </div>
             </div>
             
-            <div class="w-full text-center mb-6">
-                <h2 id="track-title" class="text-xl font-medium text-gray-900 mb-1"></h2>
-                <p id="track-artist" class="text-sm text-gray-600"></p>
+            <div class="track-info">
+                <h2 id="track-title" class="track-title"></h2>
+                <p id="track-artist" class="track-artist"></p>
             </div>
             
-            <div class="w-full mb-6">
+            <div class="progress-container">
                 <input type="range" class="progress-bar" id="progress-bar" min="0" max="100" value="0">
-                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                <div class="time-display">
                     <span id="current-time">0:00</span>
                     <span id="total-time">0:00</span>
                 </div>
             </div>
             
-            <div class="flex items-center justify-between w-full mb-8">
-                <div class="w-10 h-10 flex items-center justify-center">
-                    <i class="ri-shuffle-line text-gray-600 text-xl"></i>
+            <div class="player-controls">
+                <div class="control-btn">
+                    <i class="ri-shuffle-line"></i>
                 </div>
-                <div class="w-10 h-10 flex items-center justify-center">
-                    <i class="ri-skip-back-fill text-gray-800 text-2xl"></i>
+                <div class="control-btn">
+                    <i class="ri-skip-back-fill"></i>
                 </div>
-                <div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20 cursor-pointer !rounded-button" id="play-pause-btn">
-                    <i id="play-pause-icon" class="ri-play-fill text-white text-3xl"></i>
+                <div class="play-pause-btn" id="play-pause-btn">
+                    <i id="play-pause-icon" class="ri-play-fill"></i>
                 </div>
-                <div class="w-10 h-10 flex items-center justify-center">
-                    <i class="ri-skip-forward-fill text-gray-800 text-2xl"></i>
+                <div class="control-btn">
+                    <i class="ri-skip-forward-fill"></i>
                 </div>
-                <div class="w-10 h-10 flex items-center justify-center">
-                    <i class="ri-repeat-line text-gray-600 text-xl"></i>
+                <div class="control-btn">
+                    <i class="ri-repeat-line"></i>
                 </div>
             </div>
             
-            <div class="flex items-center w-full mb-4">
-                <div class="w-8 h-8 flex items-center justify-center">
-                    <i id="volume-down-icon" class="ri-volume-down-line text-gray-600"></i>
+            <div class="volume-control">
+                <div class="volume-icon">
+                    <i id="volume-down-icon" class="ri-volume-down-line"></i>
                 </div>
-                <div class="flex-1 mx-2">
+                <div class="volume-slider-container">
                     <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
                 </div>
-                <div class="w-8 h-8 flex items-center justify-center">
-                    <i id="volume-up-icon" class="ri-volume-up-line text-gray-600"></i>
+                <div class="volume-icon">
+                    <i id="volume-up-icon" class="ri-volume-up-line"></i>
                 </div>
             </div>
             
-            <div class="w-full flex justify-center mt-2">
-                <button id="lyrics-toggle" class="flex items-center text-sm text-primary font-medium px-4 py-2 rounded-full bg-primary/10 !rounded-button">
-                    <i class="ri-mic-line mr-2"></i>
+            <div class="lyrics-toggle-container">
+                <button id="lyrics-toggle" class="lyrics-toggle-btn">
+                    <i class="ri-mic-line"></i>
                     Lời bài hát
                 </button>
             </div>
         </div>
         
-        <!-- Lyrics Section (Hidden by default) -->
-        <div id="lyrics-container" class="hidden mt-6 bg-gray-50 rounded-xl p-4 h-64 overflow-y-auto lyrics-container">
-            <div class="text-center mb-4">
-                <h3 id="lyrics-title" class="text-lg font-medium text-gray-800"></h3>
-                <p id="lyrics-artist" class="text-xs text-gray-500"></p>
+        <!-- Lyrics Section -->
+        <div id="lyrics-container" class="lyrics-container">
+            <div class="lyrics-header">
+                <h3 id="lyrics-title" class="lyrics-title"></h3>
+                <p id="lyrics-artist" class="lyrics-artist"></p>
             </div>
-            <div id="lyrics-content" class="space-y-4">
+            <div id="lyrics-content" class="lyrics-content">
                 <!-- Lyrics will be loaded here -->
             </div>
         </div>
         
         <!-- Playlist Section -->
-        <div class="mt-8">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-medium text-gray-800">Danh sách phát</h3>
-                <button class="text-xs text-primary">Xem tất cả</button>
+        <div class="playlist-section">
+            <div class="playlist-header">
+                <h3 class="playlist-title">Danh sách phát</h3>
+                <button class="view-all-btn">Xem tất cả</button>
             </div>
             
-            <div id="playlist-container" class="space-y-3">
+            <div id="playlist-container" class="playlist-items">
                 <!-- Playlist will be generated here -->
             </div>
         </div>
     </main>
 
     <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 w-full bg-white border-t border-gray-100 px-2 py-2 z-20">
-        <div class="flex justify-around items-center">
-            <a href="#" class="flex flex-col items-center justify-center w-16">
-                <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-home-5-fill text-primary"></i>
+    <nav class="bottom-nav">
+        <div class="nav-items">
+            <a href="#" class="nav-item active">
+                <div class="nav-icon">
+                    <i class="ri-home-5-fill"></i>
                 </div>
-                <span class="text-xs text-primary mt-1">Trang chủ</span>
+                <span class="nav-label">Trang chủ</span>
             </a>
             
-            <a href="#" class="flex flex-col items-center justify-center w-16">
-                <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-search-line text-gray-500"></i>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">
+                    <i class="ri-search-line"></i>
                 </div>
-                <span class="text-xs text-gray-500 mt-1">Tìm kiếm</span>
+                <span class="nav-label">Tìm kiếm</span>
             </a>
             
-            <a href="#" class="flex flex-col items-center justify-center w-16">
-                <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-album-line text-gray-500"></i>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">
+                    <i class="ri-album-line"></i>
                 </div>
-                <span class="text-xs text-gray-500 mt-1">Thư viện</span>
+                <span class="nav-label">Thư viện</span>
             </a>
             
-            <a href="#" class="flex flex-col items-center justify-center w-16">
-                <div class="w-6 h-6 flex items-center justify-center">
-                    <i class="ri-user-line text-gray-500"></i>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">
+                    <i class="ri-user-line"></i>
                 </div>
-                <span class="text-xs text-gray-500 mt-1">Cá nhân</span>
+                <span class="nav-label">Cá nhân</span>
             </a>
         </div>
     </nav>
 
-    <!-- Mini Player (Fixed at bottom above navigation) -->
-    <div id="mini-player" class="fixed bottom-16 left-0 w-full bg-white border-t border-gray-100 px-4 py-3 z-10 shadow-md hidden">
-        <div class="flex items-center">
-            <div class="w-10 h-10 rounded-md overflow-hidden mr-3">
-                <img id="mini-artwork" src="" alt="Current Track" class="w-full h-full object-cover">
+    <!-- Mini Player -->
+    <div id="mini-player" class="mini-player">
+        <div class="mini-player-content">
+            <div class="mini-album-art">
+                <img id="mini-artwork" src="" alt="Current Track">
             </div>
-            <div class="flex-1 min-w-0">
-                <p id="mini-title" class="text-sm font-medium text-gray-800 truncate"></p>
-                <p id="mini-artist" class="text-xs text-gray-500 truncate"></p>
+            <div class="mini-track-info">
+                <p id="mini-title" class="mini-title"></p>
+                <p id="mini-artist" class="mini-artist"></p>
             </div>
-            <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 flex items-center justify-center">
-                    <i class="ri-skip-back-fill text-gray-700"></i>
+            <div class="mini-controls">
+                <div class="mini-control-btn">
+                    <i class="ri-skip-back-fill"></i>
                 </div>
-                <div id="mini-play-pause-btn" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                    <i id="mini-play-pause-icon" class="ri-play-fill text-white"></i>
+                <div class="mini-play-pause-btn" id="mini-play-pause-btn">
+                    <i id="mini-play-pause-icon" class="ri-play-fill"></i>
                 </div>
-                <div class="w-8 h-8 flex items-center justify-center">
-                    <i class="ri-skip-forward-fill text-gray-700"></i>
+                <div class="mini-control-btn">
+                    <i class="ri-skip-forward-fill"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Audio Element (Hidden) -->
-    <audio id="audio-player" class="hidden"></audio>
+    <!-- Audio Element -->
+    <audio id="audio-player"></audio>
 
     <!-- External JS Files -->
     <script src="tracks.js"></script>
